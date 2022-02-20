@@ -1,0 +1,15 @@
+.parent {
+	-fx-background-color: white;
+}
+
+.sidebar {
+	-fx-background-color: #6747CD;
+}
+
+.texfield {
+	-fx-background-color: transparent;
+	-fx-border-color: #8f8e8c;
+	-fx-border-style: solid;
+	-fx-border-radius: 50px;
+	-fx-border-width: 2px;
+}
