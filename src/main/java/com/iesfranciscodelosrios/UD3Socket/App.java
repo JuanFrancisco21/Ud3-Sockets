@@ -22,10 +22,10 @@ public class App extends Application {
     
     @Override
     public void start(Stage stage) throws IOException {
-    	Parent root = loadFXML("controller/main");
+    	Parent root = loadFXML("controller/Login");
         scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
-        stage.getIcons().add(new Image("file:C:\\Users\\HP.LAPTOP-0EU979JV\\eclipse-workspace\\UD3Socket\\src\\main\\resources\\com\\iesfranciscodelosrios\\UD3Socket\\controller\\Images\\zorro1.png"));
+        stage.getIcons().add(new Image("Zorro1.png"));
         stage.setTitle("Scrammer Bank");
         stage.setScene(scene);
         stage.initStyle(StageStyle.TRANSPARENT);
@@ -42,6 +42,11 @@ public class App extends Application {
         stage.show();
     }
 
+    /**
+     * Cambio de pantalla con la funcionalidad de poder moverla.
+     * @param fxml el cual va a mostrarse.
+     * @throws IOException
+     */
     public static void setRoot(String fxml) throws IOException {
     	try {
     		Parent root = loadFXML(fxml);

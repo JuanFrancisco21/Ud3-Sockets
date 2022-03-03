@@ -106,10 +106,9 @@ public class ControllerClientes {
 
 	@FXML
 	public CheckBox opNewUserop;
-	
-	
-    @FXML
-    public TextArea optxttransaccion;
+
+	@FXML
+	public TextArea optxttransaccion;
 	// -------------------------------------------------------------------------------------
 
 	// BOTON(ROJO) DE EXIT ARRIBA-DERECHA
@@ -178,7 +177,7 @@ public class ControllerClientes {
 	private static ObjectInputStream in;
 	// OBJETOS QUE SE USAN PARA LA/LAS VISTAS
 	public static Usuario usuario = new Usuario();
-	public static Cuenta cuenta = new Cuenta(0,0.0F,"Transacciones");
+	public static Cuenta cuenta = new Cuenta(0, 0.0F, "Transacciones");
 	public static Mensaje mensaje = new Mensaje();
 	public static HiloCliente messageReceiver;
 
@@ -214,9 +213,11 @@ public class ControllerClientes {
 					});
 					Opc23.setOnMouseClicked(event -> {
 						OpcionesOperario(3);
+						configureOperario();
 					});
 					Opc24.setOnMouseClicked(event -> {
 						OpcionesOperario(4);
+						configureOperario();
 
 					});
 				} else {
@@ -260,27 +261,32 @@ public class ControllerClientes {
 
 	public static void cofigureOnServerResponse() {
 		if (controllerClientStage != null) {
-			
-			if (usuario!=null && !usuario.getAdministrador()) {
-				TableView<Cuenta> tablecuentas = (TableView<Cuenta>) controllerClientStage.getScene().lookup("#cuentas");
+
+			if (usuario != null && !usuario.getAdministrador()) {
+				TableView<Cuenta> tablecuentas = (TableView<Cuenta>) controllerClientStage.getScene()
+						.lookup("#cuentas");
 				tablecuentas.getItems().clear();
 				tablecuentas.getItems().add(cuenta);
-				
+
 				TextArea transaccion = (TextArea) controllerClientStage.getScene().lookup("#txttransaccion");
 				transaccion.setText(cuenta.getTransactions());
-				
-			}else {
-				TableView<Cuenta> OPtablecuentas = (TableView<Cuenta>) controllerClientStage.getScene().lookup("#opCuenta");
-				OPtablecuentas.getItems().clear();
-				OPtablecuentas.getItems().add(mensaje.getCuenta());
-				
-				TextArea optransaccion = (TextArea) controllerClientStage.getScene().lookup("#optxttransaccion");
-				optransaccion.setText(mensaje.getCuenta().getTransactions());
-				
-				TableView<Usuario> OPtableusuarios = (TableView<Usuario>) controllerClientStage.getScene()
-						.lookup("#opUser");
-				OPtableusuarios.getItems().clear();
-				OPtableusuarios.getItems().add(mensaje.getUser());
+
+			} else {
+				if (mensaje.getCuenta() != null) {
+					TableView<Cuenta> OPtablecuentas = (TableView<Cuenta>) controllerClientStage.getScene()
+							.lookup("#opCuenta");
+					OPtablecuentas.getItems().clear();
+					OPtablecuentas.getItems().add(mensaje.getCuenta());
+					
+					TextArea optransaccion = (TextArea) controllerClientStage.getScene().lookup("#optxttransaccion");
+					optransaccion.setText(mensaje.getCuenta().getTransactions().toString());					
+				}
+				if (mensaje.getUser()!=null) {
+					TableView<Usuario> OPtableusuarios = (TableView<Usuario>) controllerClientStage.getScene()
+							.lookup("#opUser");
+					OPtableusuarios.getItems().clear();
+					OPtableusuarios.getItems().add(mensaje.getUser());					
+				}
 			}
 
 		}
@@ -310,7 +316,7 @@ public class ControllerClientes {
 		if (mensaje.getCuenta() != null) {
 			try {
 				this.CuentaObs = FXCollections.observableArrayList(new ArrayList<Cuenta>());
-				this.CuentaObs.add(cuenta);
+				this.CuentaObs.add(mensaje.getCuenta());
 				opCuentaid.setCellValueFactory(cellData -> {
 					return new SimpleObjectProperty<>(cellData.getValue().getId());
 				});
@@ -326,7 +332,7 @@ public class ControllerClientes {
 		if (mensaje.getUser() != null) {
 			try {
 				this.UsuarioObs = FXCollections.observableArrayList(new ArrayList<Usuario>());
-				this.UsuarioObs.add(usuario);
+				this.UsuarioObs.add(mensaje.getUser());
 				opUserid.setCellValueFactory(cellData -> {
 					return new SimpleObjectProperty<>(cellData.getValue().getId());
 				});
@@ -356,13 +362,13 @@ public class ControllerClientes {
 	private void OpcionesCliente(int opc) {
 		try {
 			switch (opc) {
-			
+
 			// ENVIAR MENSAJE AL SERVIDOR CON COMANDO 1 PARA RECIBIR DATOS DE LA CUENTA/S.
 			case 1:
 				ControllerClientes.mensaje.setComando(1);
 				sendObject(mensaje);
 				break;
-				
+
 			// ENVIAR MENSAJE AL SERVIDOR CON COMANDO 3 ENVIANDO EL DINERO A INGRESAR
 			// INDICADO POR TxtDineroRetirar E INTRODUCIDO EN mensaje.dinerotransaccion.
 			case 2:
@@ -388,7 +394,7 @@ public class ControllerClientes {
 					});
 				}
 				break;
-				
+
 			// ENVIAR MENSAJE AL SERVIDOR CON COMANDO 2 ENVIANDO EL DINERO A RETIRAR
 			// INDICADO POR TxtDineroIngresar E INTRODUCIDO EN mensaje.dinerotransaccion.
 			case 3:
@@ -427,13 +433,43 @@ public class ControllerClientes {
 	private void OpcionesOperario(int opc) {
 		try {
 			switch (opc) {
-			
 			// ENVIAR MENSAJE AL SERVIDOR CON COMANDO 1 PARA RECIBIR DATOS DE LA CUENTA/S.
 			case 1:
-				ControllerClientes.mensaje.setComando(1);
-				sendObject(mensaje);
+			case 2:
+				if (opNewNombre.getText().length() >= 4 && opNewApellido.getText().length() >= 3
+						&& opNewPassword.getText().length() >= 4 && opNewUsername.getText().length() >= 4) {
+					try {
+						String name = opNewNombre.getText();
+						String surname = opNewApellido.getText();	
+						Boolean op = opNewUserop.isSelected();
+						String username = opNewUsername.getText();
+						String password = opNewPassword.getText();
+						opNewNombre.setText("");
+						opNewApellido.setText("");
+						opNewUsername.setText("");
+						opNewPassword.setText("");
+						ControllerClientes.mensaje.setComando(opc);
+						ControllerClientes.mensaje.setCuenta(null);
+						ControllerClientes.mensaje.setUser(new Usuario(-1, name, surname, op, username, password));
+						opCuentaBuscar.setText("");
+						sendObject(mensaje);
+
+					} catch (Exception e) {
+						e.printStackTrace();
+						Platform.runLater(() -> {
+							Dialog.showWarning("Error a crear usuario", "", null);
+						});
+					}
+
+				} else {
+					Platform.runLater(() -> {
+						Dialog.showWarning("Rellene todos los campos",
+								"Todos los campos deben estar completos" , "longitud minima de 4 caracteres (Todo)");
+					});
+				}
+
 				break;
-				
+
 			// ENVIAR MENSAJE AL SERVIDOR CON COMANDO 3 EN BUSCA DE CUENTA
 			case 3:
 				if (opCuentaBuscar.getText().length() >= 1) {
@@ -459,7 +495,7 @@ public class ControllerClientes {
 					});
 				}
 				break;
-				
+
 			// ENVIAR MENSAJE AL SERVIDOR CON COMANDO 4 EN BUSCA DE CLIENTES
 			case 4:
 				if (opUserBuscar.getText().length() >= 1) {
@@ -506,7 +542,7 @@ public class ControllerClientes {
 					messageReceiver.stop();
 					ControllerClientes.mensaje.setComando(6);
 					sendObject(mensaje);
-					App.setRoot("controller/main");
+					App.setRoot("controller/Login");
 
 				} else {
 					LateralCliente.setVisible(false);
@@ -514,7 +550,7 @@ public class ControllerClientes {
 					messageReceiver.stop();
 					ControllerClientes.mensaje.setComando(4);
 					sendObject(mensaje);
-					App.setRoot("controller/main");
+					App.setRoot("controller/Login");
 				}
 			}
 
@@ -522,7 +558,6 @@ public class ControllerClientes {
 			e.printStackTrace();
 		}
 	}
-
 
 	/**
 	 * FUNCION PARA ENVIAR UN OBJETO AL SERVIDOR MEDIANTE EL SOCKET.
@@ -534,4 +569,22 @@ public class ControllerClientes {
 		out.writeObject(new Mensaje(mensaje));
 	}
 
+	public static void showError(String m) {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				Dialog.showError("Servidor", m, null);
+			}
+		});
+	}
+	
+	public static void showInfo(String m) {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				Dialog.showWarning("Servidor", m, null);
+			}
+		});
+	}
+	
 }

@@ -18,7 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class MainController {
+public class LoginController {
 
 	@FXML
 	private ImageView Exit;
@@ -49,11 +49,11 @@ public class MainController {
 	 */
 	public void initialize() {
 		try {
-			MainController.socket = new Socket("localhost", 9999);
-			MainController.out = new ObjectOutputStream(socket.getOutputStream());
-			MainController.in = new ObjectInputStream(socket.getInputStream());
-			MainController.mensaje = new Mensaje();
-			MainController.usuario = mensaje.getUser();
+			LoginController.socket = new Socket("localhost", 9999);
+			LoginController.out = new ObjectOutputStream(socket.getOutputStream());
+			LoginController.in = new ObjectInputStream(socket.getInputStream());
+			LoginController.mensaje = new Mensaje();
+			LoginController.usuario = mensaje.getUser();
 
 			messageReceiver = new HiloCliente(mensaje, in);
 			Platform.runLater(new Runnable() {
@@ -103,7 +103,7 @@ public class MainController {
 		Platform.runLater(() -> {
 			try {
 				ControllerClientes.setValues(socket, in, out, mensaje, messageReceiver);
-				App.setRoot("controller/new");
+				App.setRoot("controller/main");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
