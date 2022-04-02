@@ -7,8 +7,11 @@ module com.iesfranciscodelosrios.UD3Socket {
     opens com.iesfranciscodelosrios.UD3Socket.controller to javafx.fxml, javafx.base, javafx.graphics, javafx.controls;
     opens com.iesfranciscodelosrios.UD3Socket to javafx.fxml, javafx.base, javafx.graphics, javafx.controls;
     opens Model to javafx.fxml, javafx.base, javafx.graphics, javafx.controls;
+    opens Utils to javafx.fxml, javafx.base, javafx.graphics, javafx.controls;
+
     exports com.iesfranciscodelosrios.UD3Socket.controller;
     exports com.iesfranciscodelosrios.UD3Socket;
     exports Model;
+    exports Utils;
 
 }

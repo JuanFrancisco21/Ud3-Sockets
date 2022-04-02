@@ -25,7 +25,7 @@ public class App extends Application {
     	Parent root = loadFXML("controller/Login");
         scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
-        stage.getIcons().add(new Image("Zorro1.png"));
+        //stage.getIcons().add(new Image("Zorro1.png"));
         stage.setTitle("Scrammer Bank");
         stage.setScene(scene);
         stage.initStyle(StageStyle.TRANSPARENT);
