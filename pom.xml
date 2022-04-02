@@ -5,13 +5,15 @@
 	<groupId>com.iesfranciscodelosrios</groupId>
 	<artifactId>UD3Socket</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
-
 	</properties>
+	
 	<dependencies>
+		<!-- Dependencias preparadas para .jar respecto a javafx -->
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
@@ -22,23 +24,22 @@
 			<artifactId>javafx-fxml</artifactId>
 			<version>17.0.1</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-graphics -->
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-graphics</artifactId>
 			<version>17.0.1</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-base -->
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-base</artifactId>
 			<version>17.0.1</version>
 		</dependency>
-
+		<!-- ................................................................... -->
 	</dependencies>
+	
 	<build>
 		<plugins>
+			<!-- Plugin para la generacion de un archivo .jar -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
@@ -54,7 +55,7 @@
 			</plugin>
 
 
-			<!-- https://mvnrepository.com/artifact/maven/maven-jar-plugin -->
+			<!-- Plugin para al compilacion del programa -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
@@ -63,7 +64,7 @@
 				</configuration>
 			</plugin>
 
-
+			<!-- Plugin destinado al control de javafx (vistas del porgrama) -->
 			<plugin>
 				<groupId>org.openjfx</groupId>
 				<artifactId>javafx-maven-plugin</artifactId>
